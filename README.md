@@ -2,7 +2,7 @@
 
 A lunar module descent simulation built with React, Node.js/Express, and SQLite. This repo features realistic physics, automatic/manual controls, and authentic mission control aesthetics.
 
-![Lunar Lander Simulation](https://images.nasa.gov/details/as11-40-5903)
+![Lunar Lander Simulation](https://images-assets.nasa.gov/image/as11-40-5903/as11-40-5903~medium.jpg)
 
 ## Features
 
