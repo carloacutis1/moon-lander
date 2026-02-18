@@ -1,59 +1,136 @@
 //CPP code will go here
 #include <iostream>
-
-struct LanderState {
-    double altitude;   // meters
-    double velocity;   // m/s (up positive)
-    double fuel;       // fuel units
-    bool   landed;
-    bool   crashed;
-};
+#include <algorithm>
+#include <cmath>
+#include <string>
 
 struct LanderConfig {
-    double gravity = 1.62;      // moon gravity (m/s^2)
-    double maxThrust = 4.0;     // max upward acceleration (m/s^2)
-    double fuelBurnRate = 0.5;  // units per second
-    double safeLandingSpeed = 2.0; // m/s
+    double g = 1.62;            // Moon gravity (m/s^2)
+    double maxThrust = 4500.0;   // Newtons
+    double fuelBurnRate = 1.2;   // fuel units per second at full throttle
+    double safeLandingSpeed = 3.0; // m/s
 };
 
-void updateLander(
-    LanderState& state,
-    const LanderConfig& config,
-    double thrustPercent,  // 0.0 → 1.0
-    double dt
-) {
-    if (state.landed || state.crashed)
-        return;
+enum class LanderStatus { Flying, Landed, Crashed };
 
-    // Clamp thrust
-    if (thrustPercent < 0) thrustPercent = 0;
-    if (thrustPercent > 1) thrustPercent = 1;
+struct LanderState {
+    double time = 0.0;
+    double altitude = 500.0;  // meters
+    double velocity = 0.0;    // m/s (negative means descending if you prefer)
+    double fuel = 120.0;      // fuel units
+    double dryMass = 900.0;   // kg (no fuel)
+    double throttle = 0.0;    // 0..1
+    LanderStatus status = LanderStatus::Flying;
+};
 
-    double acceleration = -config.gravity;
-
-    if (state.fuel > 0 && thrustPercent > 0) {
-        double thrustAccel = config.maxThrust * thrustPercent;
-        acceleration += thrustAccel;
-
-        state.fuel -= config.fuelBurnRate * thrustPercent * dt;
-        if (state.fuel < 0) state.fuel = 0;
+class LanderSim {
+public:
+    LanderSim(LanderConfig cfg, LanderState st)
+        : cfg_(cfg), st_(st) {
     }
 
-    // Integrate (Euler)
-    state.velocity += acceleration * dt;
-    state.altitude += state.velocity * dt;
+    const LanderState& state() const { return st_; }
 
-    // Ground collision
-    if (state.altitude <= 0) {
-        state.altitude = 0;
+    void setThrottle(double t) {
+        st_.throttle = std::clamp(t, 0.0, 1.0);
+    }
 
-        if (std::abs(state.velocity) <= config.safeLandingSpeed) {
-            state.landed = true;
+    void step(double dt) {
+        if (st_.status != LanderStatus::Flying) return;
+
+        // Fuel / thrust
+        double throttle = std::clamp(st_.throttle, 0.0, 1.0);
+        if (st_.fuel <= 0.0) throttle = 0.0;
+
+        double fuelUsed = cfg_.fuelBurnRate * throttle * dt;
+        if (fuelUsed > st_.fuel) {
+            // If not enough fuel, scale throttle down for this tick
+            throttle = (st_.fuel <= 0.0) ? 0.0 : (st_.fuel / (cfg_.fuelBurnRate * dt));
+            fuelUsed = st_.fuel;
+        }
+        st_.fuel -= fuelUsed;
+
+        double mass = st_.dryMass + st_.fuel; // simple: fuel units ~ kg (ok for sim)
+        double thrust = cfg_.maxThrust * throttle; // N
+
+        // Acceleration: +up is positive, gravity pulls down
+        double a = (thrust / mass) - cfg_.g;
+
+        // Integrate (Euler)
+        st_.velocity += a * dt;
+        st_.altitude += st_.velocity * dt;
+        st_.time += dt;
+
+        // Touchdown
+        if (st_.altitude <= 0.0) {
+            st_.altitude = 0.0;
+            resolveTouchdown();
+        }
+    }
+
+private:
+    void resolveTouchdown() {
+        // If descending too fast (negative velocity magnitude), crash
+        // Here: downward velocity is negative if falling; but we didn't enforce sign.
+        // We'll just use speed magnitude.
+        double speed = std::abs(st_.velocity);
+        if (speed <= cfg_.safeLandingSpeed) {
+            st_.status = LanderStatus::Landed;
+            st_.velocity = 0.0;
         }
         else {
-            state.crashed = true;
+            st_.status = LanderStatus::Crashed;
         }
+    }
 
-        state.velocity = 0;
+    LanderConfig cfg_;
+    LanderState st_;
+};
+
+// Simple console driver (backend demo)
+int main() {
+    LanderConfig cfg;
+    LanderState st;
+
+    LanderSim sim(cfg, st);
+
+    const double dt = 0.1;
+
+    std::cout << "Moon Lander (backend demo)\n";
+    std::cout << "Commands: throttle 0..1, or 'q' to quit\n\n";
+
+    while (sim.state().status == LanderStatus::Flying) {
+        const auto& s = sim.state();
+        std::cout << "t=" << s.time
+            << "  alt=" << s.altitude
+            << "  vel=" << s.velocity
+            << "  fuel=" << s.fuel
+            << "  throttle=" << s.throttle
+            << "\n";
+
+        std::cout << "Enter throttle: ";
+        std::string input;
+        if (!(std::cin >> input)) break;
+        if (input == "q") break;
+
+        double thr = std::stod(input);
+        sim.setThrottle(thr);
+
+        // Advance a few ticks per input (feels more like a sim)
+        for (int i = 0; i < 5 && sim.state().status == LanderStatus::Flying; i++) {
+            sim.step(dt);
+        }
+        std::cout << "\n";
+    }
+
+    const auto& end = sim.state();
+    if (end.status == LanderStatus::Landed) {
+        std::cout << "LANDED safely! Final speed was within limits.\n";
+    }
+    else if (end.status == LanderStatus::Crashed) {
+        std::cout << "CRASHED. Impact speed was too high.\n";
+    }
+    else {
+        std::cout << "Simulation ended.\n";
     }
 }
