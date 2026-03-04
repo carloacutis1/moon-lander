@@ -19,7 +19,7 @@ sqlite3 moon_lander.db < populate_db.sql
 Use [SQLite C++ wrapper](https://github.com/sqlite/sqlite) or [sqlite3.h](https://www.sqlite.org/capi3ref.html) to connect, query, and update.
 
 This workflow is now streamlined for C++ integration.
-=======
+
 # 🚀 Team Lightsaber Lunar Module Simulation
 
 A lunar module descent simulation built with React, Node.js/Express, and SQLite. This repo features realistic physics, automatic/manual controls, and authentic mission control aesthetics.
@@ -118,5 +118,3 @@ cd ../client && npm install
 MIT License - Educational/Simulation purposes
 
 ## Acknowledgments
-
->>>>>>> 040943cc0c3c60c1c1e89275ebd5b4861e63b590
