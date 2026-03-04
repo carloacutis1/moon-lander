@@ -1,0 +1,121 @@
+{
+  "physicalConstants": {
+    "G": 6.67430e-11,
+    "moonRadius": 1740000,
+    "moonMass": 7.342e22,
+    "moonGravity": 1.62,
+    "earthRadius": 6371000,
+    "earthMass": 5.972e24,
+    "earthGravity": 9.81
+  },
+  "landerSpecs": {
+    "emptyLanderMass": 500,
+    "startingFuelMass": 1000,
+    "startingHeight": 100000,
+    "thrustForce": 15000,
+    "thrustRequiredFuelMass": 10,
+    "maxFuel": 1500,
+    "fuelConsumptionRate": 10,
+    "width": 5,
+    "height": 7,
+    "legs": 4
+  },
+  "missionParameters": {
+    "targetLandingSpeed": 1,
+    "safeDescentRate": 2,
+    "maxLandingSpeed": 5,
+    "criticalFuelLevel": 100,
+    "timeStep": 0.1
+  },
+  "landers": [
+    {
+      "id": 1,
+      "name": "Apollo Module",
+      "emptyMass": 500,
+      "maxFuel": 1500,
+      "thrustForce": 15000,
+      "description": "Standard lunar module based on Apollo architecture"
+    },
+    {
+      "id": 2,
+      "name": "Light Scout",
+      "emptyMass": 300,
+      "maxFuel": 800,
+      "thrustForce": 10000,
+      "description": "Lightweight configuration for fuel efficiency"
+    },
+    {
+      "id": 3,
+      "name": "Heavy Hauler",
+      "emptyMass": 700,
+      "maxFuel": 2000,
+      "thrustForce": 20000,
+      "description": "Heavy configuration for cargo missions"
+    }
+  ],
+  "terrainDifficulty": [
+    {
+      "id": 1,
+      "name": "Flat Plains",
+      "description": "Easy landing zone with minimal obstacles",
+      "difficulty": "Easy",
+      "targetHeight": 100000,
+      "targetVelocity": 0
+    },
+    {
+      "id": 2,
+      "name": "Crater Region",
+      "description": "Moderate difficulty with terrain variations",
+      "difficulty": "Medium",
+      "targetHeight": 100000,
+      "targetVelocity": 0
+    },
+    {
+      "id": 3,
+      "name": "Cliff Edge",
+      "description": "Challenging terrain with steep gradients",
+      "difficulty": "Hard",
+      "targetHeight": 100000,
+      "targetVelocity": 0
+    }
+  ],
+  "gameScenarios": [
+    {
+      "id": 1,
+      "name": "Tutorial Landing",
+      "description": "Learn the basics of lunar landing",
+      "initialHeight": 50000,
+      "initialVelocity": 100,
+      "startingFuel": 1000,
+      "difficulty": "Easy"
+    },
+    {
+      "id": 2,
+      "name": "Standard Mission",
+      "description": "Complete a standard lunar landing mission",
+      "initialHeight": 100000,
+      "initialVelocity": 150,
+      "startingFuel": 1200,
+      "difficulty": "Medium"
+    },
+    {
+      "id": 3,
+      "name": "Emergency Landing",
+      "description": "Land with minimal fuel remaining",
+      "initialHeight": 80000,
+      "initialVelocity": 200,
+      "startingFuel": 500,
+      "difficulty": "Hard"
+    },
+    {
+      "id": 4,
+      "name": "Speed Run Challenge",
+      "description": "Complete landing in minimum time",
+      "initialHeight": 100000,
+      "initialVelocity": 150,
+      "startingFuel": 1500,
+      "difficulty": "Hard"
+    }
+  ]
+}
+temporary data ^^^
