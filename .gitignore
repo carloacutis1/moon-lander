@@ -1,0 +1,19 @@
+# Visual Studio
+.vs/
+*.vcxproj.user
+*.suo
+*.ipch
+Browse.VC.db
+Solution.VC.db
+
+# Build outputs
+*.o
+*.obj
+*.exe
+*.out
+
+# macOS
+.DS_Store
+
+# Backup files
+*~
