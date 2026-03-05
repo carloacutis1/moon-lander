@@ -1,20 +1,30 @@
+x64/
+x64/
+## Visual Studio
 .vs/
 *.db
-*.exe
-*.obj
+*.vcxproj.user
 *.suo
 *.user
 *.ipch
 *.VC.db
 *.VC.opendb
+Browse.VC.db
+Solution.VC.db
 *.log
 *.vscode/
 
-x64/
-Debug/
-<<<<<<< HEAD
+# Build outputs
+*.o
+*.obj
+*.exe
+*.out
 
-x64/
+# macOS
+.DS_Store
+
+# Backup files
+
+*~
 Debug/
-=======
->>>>>>> d9ec195 (Refactor: fix build, add .gitignore, clean project structure)
+>>>>>>> ab41fa1133b08a2b1365492374ecf6f3c478b317
