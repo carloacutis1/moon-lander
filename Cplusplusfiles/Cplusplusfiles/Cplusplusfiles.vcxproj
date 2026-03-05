@@ -130,7 +130,11 @@
   <ItemGroup>
     <ClCompile Include="..\..\CPP\main.cpp" />
     <ClCompile Include="..\..\CPP\sqlite3.c" />
+    <ClCompile Include="..\..\demo.cpp" />
     <ClCompile Include="Cplusplusfiles.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\CPP\demo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

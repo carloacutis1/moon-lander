@@ -1,0 +1,11 @@
+.vs/
+*.db
+*.exe
+*.obj
+*.suo
+*.user
+*.ipch
+*.VC.db
+*.VC.opendb
+*.log
+*.vscode/

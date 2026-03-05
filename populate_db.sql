@@ -58,6 +58,30 @@ INSERT OR IGNORE INTO equations (name, description)
 VALUES ('Thrust Equation', 'F = m * a');
 
 -- Example queries
+-- Blackboard tables for lander state
+CREATE TABLE IF NOT EXISTS currentdata (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	fuelMass INTEGER,
+	height INTEGER,
+	velocity INTEGER,
+	thrustersActivated INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS previousdata (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	fuelMass INTEGER,
+	height INTEGER,
+	velocity INTEGER,
+	thrustersActivated INTEGER
+);
+
+-- Initial state for currentdata
+INSERT OR REPLACE INTO currentdata (id, fuelMass, height, velocity, thrustersActivated)
+VALUES (1, 2000, 200000, 0, 0);
+
+-- Initial state for previousdata
+INSERT OR REPLACE INTO previousdata (id, fuelMass, height, velocity, thrustersActivated)
+VALUES (1, 2000, 200000, 0, 0);
 SELECT * FROM landers;
 SELECT * FROM constants;
 SELECT * FROM equations;
