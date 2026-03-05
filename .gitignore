@@ -12,3 +12,9 @@
 
 x64/
 Debug/
+<<<<<<< HEAD
+
+x64/
+Debug/
+=======
+>>>>>>> d9ec195 (Refactor: fix build, add .gitignore, clean project structure)
