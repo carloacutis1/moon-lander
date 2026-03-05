@@ -9,3 +9,6 @@
 *.VC.opendb
 *.log
 *.vscode/
+
+x64/
+Debug/
