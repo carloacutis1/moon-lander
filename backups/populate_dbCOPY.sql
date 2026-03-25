@@ -61,4 +61,3 @@ VALUES ('Thrust Equation', 'F = m * a');
 SELECT * FROM landers;
 SELECT * FROM constants;
 SELECT * FROM equations;
-
