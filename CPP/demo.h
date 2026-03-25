@@ -13,3 +13,5 @@ LanderData readDB(sqlite3* db, const char* table);
 void writeDB(sqlite3* db, const char* table, const LanderData& data);
 void updateLanderState(sqlite3* db, bool thrustersActivated);
 void printLanderTables(sqlite3* db);
+
+void resetLanderTables(sqlite3* db);

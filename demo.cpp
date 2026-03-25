@@ -91,3 +91,10 @@ void printLanderTables(sqlite3* db) {
     printDebugInfo(previous, "Previous Data");
     printDebugInfo(current, "Current Data");
 }
+
+// Reset both tables to default values
+void resetLanderTables(sqlite3* db) {
+    LanderData defaultData{2000, 200000, 0, 0};
+    writeDB(db, "currentdata", defaultData);
+    writeDB(db, "previousdata", defaultData);
+}

@@ -15,6 +15,9 @@ int main() {
         std::cout << "Opened database successfully!" << std::endl;
     }
 
+    // Reset tables to default values at program start
+    resetLanderTables(db);
+
     std::cout << std::boolalpha;
     while (true) {
         printLanderTables(db);
