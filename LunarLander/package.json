@@ -1,0 +1,32 @@
+{
+  "name": "lunar-lander-simulation",
+  "version": "1.0.0",
+  "description": "NASA-style Lunar Lander Simulation with React frontend and Express backend plus JSON-backed reference data",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev",
+    "test": "node --test server/test/*.test.js",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "lunar",
+    "lander",
+    "simulation",
+    "nasa",
+    "moon",
+    "apollo"
+  ],
+  "author": "NASA Simulation Team",
+  "license": "MIT"
+}

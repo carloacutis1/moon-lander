@@ -25,6 +25,9 @@ Cplusplusfiles/Cplusplusfiles/Cplusplusfiles
 # Node dependencies
 **/node_modules/
 
+# Python virtual environments
+**/.venv/
+
 # macOS
 .DS_Store
 
