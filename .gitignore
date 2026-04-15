@@ -1,5 +1,4 @@
 x64/
-x64/
 ## Visual Studio
 .vs/
 *.db
@@ -19,6 +18,12 @@ Solution.VC.db
 *.obj
 *.exe
 *.out
+CPP/main
+CPP/lander
+Cplusplusfiles/Cplusplusfiles/Cplusplusfiles
+
+# Node dependencies
+**/node_modules/
 
 # macOS
 .DS_Store
@@ -27,4 +32,3 @@ Solution.VC.db
 
 *~
 Debug/
->>>>>>> ab41fa1133b08a2b1365492374ecf6f3c478b317
