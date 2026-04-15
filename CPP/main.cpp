@@ -1,14 +1,23 @@
-// ...existing includes...
+// Cross-platform Moon Lander - Blackboard Architecture
 #include <iostream>
 #include <string>
 #include "sqlite3.h"
 #include "demo.h"
 
+// Relative path works on both Windows and macOS
+// Assumes executable runs from CPP folder, DB is in parent directory
+#ifdef _WIN32
+    #define DB_PATH "..\\moon_lander.db"
+#else
+    #define DB_PATH "../moon_lander.db"
+#endif
+
 int main() {
     sqlite3* db;
-    int rc = sqlite3_open("C:/Users/gusjo_lw96ve5/OneDrive/Desktop/moon-lander/moon_lander.db", &db);
+    int rc = sqlite3_open(DB_PATH, &db);
     if (rc) {
         std::cerr << "Can't open database: " << sqlite3_errmsg(db) << std::endl;
+        std::cerr << "Make sure moon_lander.db exists in the parent directory." << std::endl;
         return 1;
     }
     else {
