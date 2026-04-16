@@ -4,6 +4,7 @@
 #include <iostream>
 #include <ostream>
 #include <sstream>
+#include <string>
 
 static constexpr unsigned STARTING_HEIGHT { 100'000 };
 static constexpr unsigned STARTING_FUEL_MASS_KG { 10'920 };
@@ -34,7 +35,7 @@ void printDebugInfo(const Lander& lander)
 
     if (lander.getBoredom() >= 100) {
         for (auto& line : BORED_MESSAGE) {
-            std::size_t leftoverSpace { line.length() - scrollOffset };
+            const std::size_t leftoverSpace { line.length() - scrollOffset };
             std::cout << line.substr(scrollOffset, DEBUG_DISPLAY_WIDTH);
             std::cout << line.substr(0, DEBUG_DISPLAY_WIDTH - leftoverSpace) << '\n';
         }
@@ -52,9 +53,12 @@ void printDebugInfo(const Lander& lander)
 
         std::cout << std::setw(DEBUG_DISPLAY_WIDTH / 2)
                   << (std::ostringstream {} << "Height : " << lander.getHeight()).str()
-                  << lander.getThrustTicks() << '\n';
+                  << "Thrust Ticks : " << lander.getThrustTicks() << '\n';
 
-        std::cout << "Velocity : " << lander.getVelocity() << '\n';
+                  
+        std::cout << std::setw(DEBUG_DISPLAY_WIDTH / 2)
+                  << (std::ostringstream {} << "Velocity : " << lander.getVelocity()).str()
+                  << "Thrust Force : " << lander.getThrustForce() << '\n';
 
         if (lander.getTicksTilLanding().has_value()) {
             std::cout << "Ticks until landing : " << *lander.getTicksTilLanding() << '\n';
@@ -90,18 +94,21 @@ int main()
     while (true) {
         Lander lander { readDB() };
         std::string rawInput;
+        bool thrustState{};
+
+        printDebugInfo(lander);
 
         if (lander.getIsOverheated()) {
             std::cout << "OVERHEATED THRUSTERS DISABLED";
         }
         std::getline(std::cin, rawInput);
 
-        lander.tick(
-            rawInput == "f"
-            && lander.getFuelMass() >= THRUST_REQUIRED_FUEL_MASS
-            && !lander.getIsOverheated());
+        try { lander.setThrustForce(lander.getThrustForce() + std::stol(rawInput) * 100); } catch (...) {}
+        if (rawInput == "f" && lander.getFuelMass() >= THRUST_REQUIRED_FUEL_MASS && !lander.getIsOverheated()) {
+            thrustState = true;
+        }
 
-        printDebugInfo(lander);
+        lander.tick(thrustState);
         writeDB(lander);
 
         if (lander.getHeight() <= 0) {

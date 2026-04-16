@@ -7,7 +7,6 @@ constexpr double MOON_RADIUS { 1738.1 };
 constexpr long EMPTY_LANDER_MASS_KG { 4280 };
 constexpr double DELTA_T { 0.1 };
 constexpr long THRUST_REQUIRED_FUEL_MASS { 10 };
-constexpr long THRUST_NEWTONS { 30'000'000 };
 
 class Lander {
 public:
@@ -18,6 +17,7 @@ public:
         , boredom {}
         , previousThrusterState {}
         , thrustScore {}
+        , thrustForce{30'000'000}
     {
         setTemperature(temperature);
     }
@@ -55,7 +55,7 @@ public:
 
         auto netForce { G * MOON_MASS * landerMass / pow(MOON_RADIUS + height, 2) };
         if (thrusterState) {
-            netForce -= THRUST_NEWTONS;
+            netForce -= thrustForce;
         }
 
         auto acceleration { netForce / landerMass };
@@ -108,7 +108,12 @@ public:
         }
     }
 
-    // optional is empty if lander will never land
+    long getThrustForce() const { return thrustForce; }
+    void setThrustForce(long newThrustForce) {
+        thrustForce = newThrustForce;
+    }
+
+    // optional is empty if lander thinks it will never land
     std::optional<long long> getTicksTilLanding() const
     {
         if (ticksTilLanding) {
@@ -124,7 +129,7 @@ public:
             copy.tick(false);
             ticksTilLanding = ++(*ticksTilLanding);
 
-            if (copy.velocity < previousVelocity) {
+            if (copy.velocity < previousVelocity || copy.velocity < 0 && copy.velocity == previousVelocity) {
                 ticksTilLanding.reset();
                 break;
             }
@@ -147,4 +152,5 @@ private:
     long temperature;
     long thrustScore;
     long isOverheated;
+    long thrustForce;
 };
